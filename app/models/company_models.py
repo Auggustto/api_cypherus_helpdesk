@@ -4,13 +4,13 @@ class CompanyModels():
     
     def post_company(self, session, metadata):
         
-        user = User(
+        company = User(
             name=metadata.name,
             email=metadata.email,
             password=metadata.password,
             role=metadata.role
             )
-        session.add(user)
+        session.add(company)
         session.commit()
-        session.refresh
-        return {"message": "Company added successfully"}
+        session.refresh(company)
+        return {"message": "Company added successfully", "id": company.id}
