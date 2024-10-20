@@ -10,20 +10,36 @@ from main import app
 
 client = TestClient(app)
 
-def test_crud_company():
+def test_crud_user():
     
-    ### metadata for test ###
+    ### create user ###
     metadata = dict(
-        name="Test Company",
+        name="Test User",
         email="test@example.com",
         password="Test12345678",
-        role="supervisor"
+        role="supervisor",
+        supervisor_id= ""
+        
     )
-    
-    ### create company ###
-    response = client.post("/helpdesk/api/company", json=metadata)
+    response = client.post("/helpdesk/api/user", json=metadata)
     assert response.status_code == 201
     id = response.json()["id"]
     
+    ### read user ###
+    response = client.get(f"/helpdesk/api/user/{int(id)}")
+    assert response.status_code == 200
     
+    ### update user ###
+    metadata_put = dict(
+        name="Test Update",
+        email="test_update@example.com",
+        password="Test12345678",
+        role="supervisor",
+        supervisor_id= ""
+    )
+    response = client.put(f"/helpdesk/api/user/{int(id)}" ,json=metadata_put)
+    assert response.status_code == 200
     
+    ### delete user ###
+    response = client.delete(f"/helpdesk/api/user/{int(id)}")
+    assert response.status_code == 200
